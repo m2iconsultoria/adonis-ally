@@ -15,7 +15,7 @@ The setup process is simple like any other provider for AdonisJs.
 
 #### Install Via Npm
 ```bash
-adonis install @adonisjs/ally
+adonis install --yarn https://github.com/m2iconsultoria/adonis-ally
 ```
 
 #### Register The Provider
@@ -41,6 +41,7 @@ Below is the list of available drivers and you are free to add more.
 5. Twitter
 6. Instagram
 7. Foursquare
+8. Auth2i
 
 <br>
 ## <a name="config"></a> Config
@@ -51,10 +52,10 @@ Configuration is defined inside a file called `config/services.js` under `ally` 
 
 ```javascript
 ally: {
-  facebook: {
+  auth2i: {
     clientId: '',
     clientSecret: '',
-    redirectUri: ''
+    redirectUri: `${Env.get("APP_URL")}/auth2i/callback`
   }
 }
 ```
@@ -69,7 +70,7 @@ Below is the list of methods you can make use of to redirect the user and fetch 
 Get the redirect url for the 3rd party website.
 
 ```javascript
-const url = await ally.driver('facebook').getRedirectUrl()
+const url = await ally.driver('auth2i').getRedirectUrl()
 ```
 
 #### redirect
@@ -77,7 +78,7 @@ const url = await ally.driver('facebook').getRedirectUrl()
 Redirect to the 3rd party website.
 
 ```javascript
-await ally.driver('facebook').redirect()
+await ally.driver('auth2i').redirect()
 ```
 
 #### getUser
@@ -85,19 +86,19 @@ await ally.driver('facebook').redirect()
 Get the user details on the redirect URL.
 
 ```javascript
-const user = await ally.driver('facebook').getUser()
+const user = await ally.driver('auth2i').getUser()
 ```
 
 If you are working with api and you have an OAuth2 access token you can get the user calling the `getUserByToken` method.
 
 ```javascript
-const user = await ally.driver('facebook').getUserByToken(accessToken)
+const user = await ally.driver('auth2i').getUserByToken(accessToken)
 ```
 
 When you have a OAuth1 access token and Access secret key you can call
 
 ```javascript
-const user = await ally.driver('facebook').getUserByToken(accessToken, accessSecret)
+const user = await ally.driver('auth2i').getUserByToken(accessToken, accessSecret)
 ```
 
 All this methods the `user` is an instance of `AllyUser` which has following methods to access the user details.
